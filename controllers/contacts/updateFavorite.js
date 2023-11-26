@@ -1,4 +1,4 @@
-const { updateStatusContact } = require('../services');
+const { updateStatusContact } = require('../../services');
 
 const updateFavorite = async (req, res) => {
   if (!Object.keys(req.body).length)
