@@ -1,4 +1,4 @@
-const { updateService } = require('../services');
+const { updateService } = require('../../services');
 
 const updateById = async (req, res) => {
   const result = await updateService(req);
