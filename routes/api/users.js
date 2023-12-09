@@ -2,38 +2,35 @@ const express = require('express');
 const ctrl = require('../../controllers/users');
 const { validateBody, authenticate, upload } = require('../../middlewares');
 const { schemas } = require('../../schemas/user');
-const { ctrlWrapper } = require('../../helpers');
 
 const router = express.Router();
 
-router.post(
-  '/register',
-  validateBody(schemas.registerSchema),
-  ctrlWrapper(ctrl.register)
-);
+// =============== SignUp ===============
+router.post('/register', validateBody(schemas.registerSchema), ctrl.register);
 
-router.post(
-  '/login',
-  validateBody(schemas.loginSchema),
-  ctrlWrapper(ctrl.login)
-);
+router.get('/verify/:verificationToken', ctrl.verify);
 
-router.get('/current', authenticate, ctrlWrapper(ctrl.getCurrent));
+router.post('/verify', validateBody(schemas.emailSchema), ctrl.resendEmail);
 
-router.post('/logout', authenticate, ctrlWrapper(ctrl.logout));
+// =============== SignIn ===============
+router.post('/login', validateBody(schemas.loginSchema), ctrl.login);
+
+router.get('/current', authenticate, ctrl.getCurrent);
+
+router.post('/logout', authenticate, ctrl.logout);
 
 router.patch(
   '/',
   authenticate,
   validateBody(schemas.subscriptionSchema),
-  ctrlWrapper(ctrl.subscription)
+  ctrl.subscription
 );
 
 router.patch(
   '/avatars',
   authenticate,
   upload.single('avatar'),
-  ctrlWrapper(ctrl.updateAvatar)
+  ctrl.updateAvatar
 );
 
 module.exports = router;
